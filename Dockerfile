@@ -4,12 +4,10 @@ COPY /go /go/src/
 
 WORKDIR /go/src/
 
-RUN go build -o /go/bin/main
+RUN go build -o /go/main
 
-ENTRYPOINT [ "/go/bin/main" ]
+FROM scratch
 
-FROM scratch as production
+COPY --from=builder /go/main /go/main
 
-COPY --from=build /go/src/app/myapp /myapp
-
-CMD ["./myapp"]
+ENTRYPOINT [ "/go/main" ]
